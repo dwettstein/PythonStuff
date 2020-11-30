@@ -33,6 +33,8 @@ def execute_script(script_path: str,
     """
     Execute a PowerShell script.
 
+    See also: https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_powershell_exe
+
     Args:
         script_path: A string with the full path to a script.
         script_inputs: A list containing input parameters for the script
@@ -61,18 +63,24 @@ def execute_script(script_path: str,
     _process_args = [
         powershell_exe_path,
         "-NoLogo",
-        "-NonInteractive",
         "-NoProfile",
+        "-NonInteractive",
     ]
     if os.name == "nt":
         _process_args.extend(["-ExecutionPolicy", execution_policy])
 
+    # Use -Command as -File doesn't work properly with begin, process, end blocks.
     _process_args.extend(["-Command", script_path])
 
     if script_inputs:
+        # Add script inputs if any.
+        # Surround with quotes if the input contains spaces and escape quotes within it.
         _process_args.extend(
             ["\"%s\"" % str(i).replace('"', '`"') if " " in i else i for i in script_inputs]
         )
+
+    # Preserve a possible script specific exit code.
+    _process_args.extend(["; exit $LASTEXITCODE"])
 
     try:
         if LOG and DEBUG:
