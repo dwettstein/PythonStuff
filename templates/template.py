@@ -63,6 +63,14 @@ def process_arguments():
                             default=max,
                             dest="accumulate",
                             help="sum the integers (default: find the max)")
+    _argparser.add_argument("-u", "--user",
+                            help=("The user for authentication."))
+    _argparser.add_argument("--pswd",
+                            help=("The password for authentication."))
+    _argparser.add_argument("--confirm",
+                            default="true",
+                            help=("Set to false for skipping the confirmation"
+                                  ". Default is true."))
     _args = _argparser.parse_args()
     return _args
 
@@ -76,7 +84,10 @@ def get_credentials(args=None):
         if _user_input:
             _user = _user_input
     print("Using username: %s" % _user)
-    _pswd = getpass.getpass()
+    if args and args.pswd:
+        _pswd = args.pswd
+    else:
+        _pswd = getpass.getpass()
     return (_user, _pswd)
 
 
@@ -103,11 +114,12 @@ def main():
         config.get("API", "port"))
     base_url_template = Template(base_url_draft)
     base_url = base_url_template.substitute(subdomain=args.instance)
-    print(base_url)
+    print("URL: %s" % base_url)
 
-    (user, pswd) = get_credentials()
+    (user, pswd) = get_credentials(args)
 
-    confirm_execution()
+    if bool(strtobool(args.confirm)):
+        confirm_execution()
 
     try:
         print(args.accumulate(args.numbers))
