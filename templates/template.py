@@ -67,10 +67,10 @@ def process_arguments():
                             help=("The user for authentication."))
     _argparser.add_argument("--pswd",
                             help=("The password for authentication."))
-    _argparser.add_argument("--confirm",
-                            default="true",
-                            help=("Set to false for skipping the confirmation"
-                                  ". Default is true."))
+    _argparser.add_argument("--skip-confirm", "-y", "--yes",
+                            default=False,
+                            action="store_true",
+                            help=("A flag to skip the confirmation."))
     _args = _argparser.parse_args()
     return _args
 
@@ -118,7 +118,7 @@ def main():
 
     (user, pswd) = get_credentials(args)
 
-    if bool(strtobool(args.confirm)):
+    if not args.skip_confirm:
         confirm_execution()
 
     try:
