@@ -4,7 +4,7 @@
 #
 #   File-Name:  template.py
 #   Author:     David Wettstein
-#   Version:    v0.0.1
+#   Version:    0.0.1
 #   License:    Copyright (c) 2018-2020 David Wettstein,
 #               licensed under the MIT License
 #               (https://dwettstein.mit-license.org/)

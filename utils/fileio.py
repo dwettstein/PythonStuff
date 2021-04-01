@@ -4,7 +4,7 @@
 #
 #   File-Name:  fileio.py
 #   Author:     David Wettstein
-#   Version:    v1.0.1
+#   Version:    1.0.1
 #   License:    Copyright (c) 2018-2020 David Wettstein,
 #               licensed under the MIT License
 #               (https://dwettstein.mit-license.org/)

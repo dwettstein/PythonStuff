@@ -4,7 +4,7 @@
 #
 #   File-Name:  webrequest.py
 #   Author:     David Wettstein
-#   Version:    v2.0.3
+#   Version:    2.0.3
 #   License:    Copyright (c) 2018-2020 David Wettstein,
 #               licensed under the MIT License
 #               (https://dwettstein.mit-license.org/)
