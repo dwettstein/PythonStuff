@@ -25,6 +25,13 @@ LOG = True
 DEBUG = False
 
 
+POWERSHELL_PATHS = {
+    "Windows": "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "Linux": "/usr/bin/pwsh",
+    "Darwin": "/usr/local/bin/pwsh",  # MacOS
+}
+
+
 def execute_script(script_path: str,
                    script_inputs: list = None,
                    powershell_exe_path: str = None,
@@ -63,29 +70,22 @@ def execute_script(script_path: str,
         else:
             print("Executing %s" % (script_path))
 
-    _current_platform = platform.system()
+    # Set default values if not provided as args.
     if powershell_exe_path is None:
-        if _current_platform == "Windows":
-            powershell_exe_path = "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\powershell.exe"
-        elif _current_platform == "Linux":
-            powershell_exe_path = "/usr/bin/pwsh"
-        elif _current_platform == "Darwin":  # MacOS
-            powershell_exe_path = "/usr/local/bin/pwsh"
-        else:
-            raise Exception(
-                "Unknown or unsupported platform: %s." % (_current_platform) +
-                "Please provide the path to PowerShell as argument."
-            )
+        powershell_exe_path = POWERSHELL_PATHS.get(platform.system())
+        assert powershell_exe_path, (
+            "Unknown platform, please provide the path to PowerShell as argument."
+        )
+    if execution_policy is None and platform.system() == "Windows":
+        execution_policy = "RemoteSigned"
 
+    # Prepare arguments for subprocess.
     _process_args = [
         powershell_exe_path,
         "-NoLogo",
         "-NoProfile",
         "-NonInteractive",
     ]
-
-    if _current_platform == "Windows" and execution_policy is None:
-        execution_policy = "RemoteSigned"
     if execution_policy is not None:
         _process_args.extend(["-ExecutionPolicy", execution_policy])
 
