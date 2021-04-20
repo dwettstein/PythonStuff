@@ -5,17 +5,18 @@
 #
 #   File-Name:  powershell.py
 #   Author:     David Wettstein
-#   Version:    1.0.1
-#   License:    Copyright (c) 2018-2020 David Wettstein,
+#   Version:    1.1.0
+#   License:    Copyright (c) 2018-2021 David Wettstein,
 #               licensed under the MIT License
 #               (https://dwettstein.mit-license.org/)
 #   Link:       https://github.com/dwettstein
 #
 #   Changelog:
+#               v1.1.0, 2021-04-20, David Wettstein: Add cross-platform bin.
 #               v1.0.1, 2020-11-29, David Wettstein: Use -Command not -File.
 #               v1.0.0, 2018-11-26, David Wettstein: Initial module.
 # -----------------------------------------------------------------------------
-import os
+import platform
 
 from . import childprocess
 
@@ -26,23 +27,25 @@ DEBUG = False
 
 def execute_script(script_path: str,
                    script_inputs: list = None,
-                   powershell_exe_path: str =
-                   "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\"
-                   "powershell.exe",
-                   execution_policy: str = "RemoteSigned") -> tuple:
+                   powershell_exe_path: str = None,
+                   execution_policy: str = None) -> tuple:
     """
     Execute a PowerShell script.
 
-    See also: https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_powershell_exe
+    See also:
+    https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_powershell_exe
 
     Args:
         script_path: A string with the full path to a script.
         script_inputs: A list containing input parameters for the script
             (be aware of the order), default is None.
-        powershell_exe_path: The path to the PowerShell exe, default is
-            "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\powershell.exe"
-        execution_policy: The execution policy for PowerShell (only for
-            Windows), default is "RemoteSigned". See here for more information:
+        powershell_exe_path: The path to the PowerShell exe, default is None.
+            For Windows, default is
+            "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\powershell.exe".
+            For Linux and MacOS, default is "/usr/bin/pwsh".
+        execution_policy: The execution policy for PowerShell, default is None.
+            For Windows, default is "RemoteSigned".
+            See also:
             https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies
 
     Returns:
@@ -60,13 +63,30 @@ def execute_script(script_path: str,
         else:
             print("Executing %s" % (script_path))
 
+    _current_platform = platform.system()
+    if powershell_exe_path is None:
+        if _current_platform == "Windows":
+            powershell_exe_path = "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\powershell.exe"
+        elif _current_platform == "Linux":
+            powershell_exe_path = "/usr/bin/pwsh"
+        elif _current_platform == "Darwin":  # MacOS
+            powershell_exe_path = "/usr/local/bin/pwsh"
+        else:
+            raise Exception(
+                "Unknown or unsupported platform: %s." % (_current_platform) +
+                "Please provide the path to PowerShell as argument."
+            )
+
     _process_args = [
         powershell_exe_path,
         "-NoLogo",
         "-NoProfile",
         "-NonInteractive",
     ]
-    if os.name == "nt":
+
+    if _current_platform == "Windows" and execution_policy is None:
+        execution_policy = "RemoteSigned"
+    if execution_policy is not None:
         _process_args.extend(["-ExecutionPolicy", execution_policy])
 
     # Use -Command as -File doesn't work properly with begin, process, end blocks.
