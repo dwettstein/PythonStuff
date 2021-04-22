@@ -5,7 +5,7 @@
 #   File-Name:  template.py
 #   Author:     David Wettstein
 #   Version:    0.0.1
-#   License:    Copyright (c) 2018-2020 David Wettstein,
+#   License:    Copyright (c) 2018-2021 David Wettstein,
 #               licensed under the MIT License
 #               (https://dwettstein.mit-license.org/)
 #   Link:       https://github.com/dwettstein
@@ -43,7 +43,7 @@ def function(param, another_param):
     Raises:
         IOError: An error occurred accessing the xy object.
     """
-    pass
+    print("Called function with args {0} and {1}".format(param, another_param))
 
 
 def process_arguments():
@@ -64,8 +64,8 @@ def process_arguments():
                             dest="accumulate",
                             help="sum the integers (default: find the max)")
     _argparser.add_argument("-u", "--user",
-                            help=("The user for authentication."))
-    _argparser.add_argument("--pswd",
+                            help=("The username for authentication."))
+    _argparser.add_argument("--password",
                             help=("The password for authentication."))
     _argparser.add_argument("--skip-confirm", "-y", "--yes",
                             default=False,
@@ -80,12 +80,11 @@ def get_credentials(args=None):
         _user = args.user
     else:
         _user = getpass.getuser()
-        _user_input = input("Please enter your username: [%s] " % _user)
+        _user_input = input("Username: [%s] " % _user)
         if _user_input:
             _user = _user_input
-    print("Using username: %s" % _user)
-    if args and args.pswd:
-        _pswd = args.pswd
+    if args and args.password:
+        _pswd = args.password
     else:
         _pswd = getpass.getpass()
     return (_user, _pswd)
