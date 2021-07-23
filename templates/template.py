@@ -67,10 +67,10 @@ def process_arguments():
                             help=("The username for authentication."))
     _argparser.add_argument("--password",
                             help=("The password for authentication."))
-    _argparser.add_argument("--skip-confirm", "-y", "--yes",
+    _argparser.add_argument("--no-confirm", "-y", "--yes",
                             default=False,
                             action="store_true",
-                            help=("A flag to skip the confirmation."))
+                            help=("Answer confirmation prompt with yes."))
     _args = _argparser.parse_args()
     return _args
 
@@ -96,9 +96,9 @@ def load_config(path):
     return _config
 
 
-def confirm_execution():
-    _confirmation = input("Are you sure you want to proceed? [y/N] ")
-    if not re.search("^[yY]{1}(es)?$", _confirmation):
+def confirm():
+    _confirm = input("Do you want to continue? [Y/n] ")
+    if not re.search("^([yY]{1}(es)?)?$", _confirm):
         print("Abort.")
         sys.exit()
 
@@ -117,8 +117,8 @@ def main():
 
     (user, pswd) = get_credentials(args)
 
-    if not args.skip_confirm:
-        confirm_execution()
+    if not args.no_confirm:
+        confirm()
 
     try:
         print(args.accumulate(args.numbers))
