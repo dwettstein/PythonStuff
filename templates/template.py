@@ -1,18 +1,15 @@
 #!/usr/bin/env python
-# -----------------------------------------------------------------------------
-# This is a template for Python scripts.
-#
-#   File-Name:  template.py
-#   Author:     David Wettstein
-#   Version:    0.0.1
-#   License:    Copyright (c) 2018-2021 David Wettstein,
-#               licensed under the MIT License
-#               (https://dwettstein.mit-license.org/)
-#   Link:       https://github.com/dwettstein
-#
-#   Changelog:
-#               v0.0.1, yyyy-mm-dd, David Wettstein: First implementation.
-# -----------------------------------------------------------------------------
+__FILENAME__="template.py"
+__AUTHOR__="David Wettstein"
+__VERSION__="0.0.1"
+__COPYRIGHT__="Copyright (c) 2018-2021 %s" % (__AUTHOR__)
+__LICENSE__="MIT License (https://dwettstein.mit-license.org/)"
+__LINK__="https://github.com/dwettstein/PythonStuff"
+__DESCRIPTION__=("This is a template for Python scripts.")
+# Changelog:
+# - v0.0.1, yyyy-mm-dd, David Wettstein: First implementation.
+
+
 import argparse
 import configparser
 import getpass
@@ -29,26 +26,17 @@ FILE_DIR = os.path.dirname(FILE_PATH)
 # pylint: disable=import-error,wrong-import-position
 
 
-def function(param, another_param):
-    """
-    Description
-
-    Args:
-        param: Whatever this parameter is.
-        another_param: Bla bla bla.
-
-    Returns:
-        Description of what is returned and how it possibly looks like.
-
-    Raises:
-        IOError: An error occurred accessing the xy object.
-    """
-    print("Called function with args {0} and {1}".format(param, another_param))
-
-
 def process_arguments():
     _argparser = argparse.ArgumentParser(
-        description="Describe what this script does.")
+        description=(__DESCRIPTION__),
+        epilog=(
+            "Version: %s\n"
+            "Link: %s\n"
+            "\n"
+            "%s,\n"
+            "licensed under the %s"
+        ) % (__VERSION__, __LINK__, __COPYRIGHT__, __LICENSE__),
+        formatter_class=argparse.RawTextHelpFormatter)
     _argparser.add_argument("-i", "--instance",
                             required=True,
                             help="The name of the API instance.")
@@ -67,11 +55,12 @@ def process_arguments():
                             help=("The username for authentication."))
     _argparser.add_argument("--password",
                             help=("The password for authentication."))
-    _argparser.add_argument("--no-confirm", "-y", "--yes",
-                            default=False,
+    _argparser.add_argument("-y", "--yes", "--no-confirm",
                             action="store_true",
+                            default=False,
                             help=("Answer confirmation prompt with yes."))
     _args = _argparser.parse_args()
+    global NO_CONFIRM; NO_CONFIRM = _args.yes
     return _args
 
 
@@ -97,10 +86,28 @@ def load_config(path):
 
 
 def confirm():
-    _confirm = input("Do you want to continue? [Y/n] ")
-    if not re.search("^([yY]{1}(es)?)?$", _confirm):
-        print("Abort.")
-        sys.exit()
+    if not NO_CONFIRM:
+        _confirm = input("Do you want to continue? [Y/n] ")
+        if not re.search("^([yY]{1}(es)?)?$", _confirm):
+            print("Abort.")
+            sys.exit()
+
+
+def function(param, another_param):
+    """
+    Description
+
+    Args:
+        param: Whatever this parameter is.
+        another_param: Bla bla bla.
+
+    Returns:
+        Description of what is returned and how it possibly looks like.
+
+    Raises:
+        IOError: An error occurred accessing the xy object.
+    """
+    print("Called function with args {0} and {1}".format(param, another_param))
 
 
 def main():
@@ -117,8 +124,7 @@ def main():
 
     (user, pswd) = get_credentials(args)
 
-    if not args.no_confirm:
-        confirm()
+    confirm()
 
     try:
         print(args.accumulate(args.numbers))

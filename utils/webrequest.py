@@ -1,22 +1,23 @@
 #!/usr/bin/env python
-# -----------------------------------------------------------------------------
-# A module providing utility classes and functions for web request handling.
-#
-#   File-Name:  webrequest.py
-#   Author:     David Wettstein
-#   Version:    2.0.3
-#   License:    Copyright (c) 2018-2020 David Wettstein,
-#               licensed under the MIT License
-#               (https://dwettstein.mit-license.org/)
-#   Link:       https://github.com/dwettstein
-#
-#   Changelog:
-#               v2.0.3, 2020-11-29, David Wettstein: Improve linting.
-#               v2.0.2, 2020-04-27, David Wettstein: Add attr _fqdn.
-#               v2.0.1, 2019-08-08, David Wettstein: Return a tuple optionally.
-#               v2.0.0, 2019-01-19, David Wettstein: Complete refactoring.
-#               v1.0.0, 2018-11-24, David Wettstein: Initial module.
-# -----------------------------------------------------------------------------
+__FILENAME__="webrequest.py"
+__AUTHOR__="David Wettstein"
+__VERSION__="2.0.4"
+__COPYRIGHT__="Copyright (c) 2018-2021 %s" % (__AUTHOR__)
+__LICENSE__="MIT License (https://dwettstein.mit-license.org/)"
+__LINK__="https://github.com/dwettstein/PythonStuff"
+__DESCRIPTION__=(
+    "A module providing utility classes and functions for web request "
+    "handling."
+)
+# Changelog:
+# - v2.0.4, 2021-12-19, David Wettstein: Refactor header part and fix typos.
+# - v2.0.3, 2020-11-29, David Wettstein: Improve linting.
+# - v2.0.2, 2020-04-27, David Wettstein: Add attr _fqdn.
+# - v2.0.1, 2019-08-08, David Wettstein: Return a tuple optionally.
+# - v2.0.0, 2019-01-19, David Wettstein: Complete refactoring.
+# - v1.0.0, 2018-11-24, David Wettstein: Initial module.
+
+
 import logging
 import re
 
@@ -144,7 +145,7 @@ class WebRequester(object):
                 self._session.headers.update({self._token_header: self._token})
 
     def close_session(self):
-        """Close the sesison if one was used."""
+        """Close the session if one was used."""
         if self._session:
             self._session.close()
             self._session = None
@@ -257,7 +258,7 @@ class WebRequester(object):
             requests.exceptions.RequestException:
                 An ambiguous exception raised by requests package.
             webrequest.WebRequestResponseException:
-                An ambiquous exception depending on the response status code.
+                An ambiguous exception depending on the response status code.
         """
         response = self.invoke(method=method,
                                endpoint=endpoint,
@@ -372,7 +373,7 @@ def status_code_to_exception(status_code, *args, **kwargs):
 
     Raises:
         webrequest.WebRequestResponseException:
-            An ambiquous exception depending on the response status code.
+            An ambiguous exception depending on the response status code.
     """
     if status_code == 400:
         raise BadRequestException(status_code, *args, **kwargs)

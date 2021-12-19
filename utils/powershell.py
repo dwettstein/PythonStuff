@@ -1,21 +1,21 @@
 #!/usr/bin/env python
-# -----------------------------------------------------------------------------
-# This module contains utility functions for executing PowerShell scripts or
-# code.
-#
-#   File-Name:  powershell.py
-#   Author:     David Wettstein
-#   Version:    1.1.0
-#   License:    Copyright (c) 2018-2021 David Wettstein,
-#               licensed under the MIT License
-#               (https://dwettstein.mit-license.org/)
-#   Link:       https://github.com/dwettstein
-#
-#   Changelog:
-#               v1.1.0, 2021-04-20, David Wettstein: Add cross-platform bin.
-#               v1.0.1, 2020-11-29, David Wettstein: Use -Command not -File.
-#               v1.0.0, 2018-11-26, David Wettstein: Initial module.
-# -----------------------------------------------------------------------------
+__FILENAME__="powershell.py"
+__AUTHOR__="David Wettstein"
+__VERSION__="1.1.1"
+__COPYRIGHT__="Copyright (c) 2018-2021 %s" % (__AUTHOR__)
+__LICENSE__="MIT License (https://dwettstein.mit-license.org/)"
+__LINK__="https://github.com/dwettstein/PythonStuff"
+__DESCRIPTION__=(
+    "This module contains utility functions for executing PowerShell scripts "
+    "or code."
+)
+# Changelog:
+# - v1.1.1, 2021-12-19, David Wettstein: Refactor header part.
+# - v1.1.0, 2021-04-20, David Wettstein: Add cross-platform bin.
+# - v1.0.1, 2020-11-29, David Wettstein: Use -Command not -File.
+# - v1.0.0, 2018-11-26, David Wettstein: Initial module.
+
+
 import platform
 
 from . import childprocess

@@ -1,18 +1,15 @@
 #!/usr/bin/env python
-# -----------------------------------------------------------------------------
-# A module template for API clients.
-#
-#   File-Name:  template_api_client.py
-#   Author:     David Wettstein
-#   Version:    0.0.1
-#   License:    Copyright (c) 2019-2020 David Wettstein,
-#               licensed under the MIT License
-#               (https://dwettstein.mit-license.org/)
-#   Link:       https://github.com/dwettstein
-#
-#   Changelog:
-#               v0.0.1, yyyy-mm-dd, David Wettstein: First implementation.
-# -----------------------------------------------------------------------------
+__FILENAME__="template_api_client.py"
+__AUTHOR__="David Wettstein"
+__VERSION__="0.0.1"
+__COPYRIGHT__="Copyright (c) 2018-2021 %s" % (__AUTHOR__)
+__LICENSE__="MIT License (https://dwettstein.mit-license.org/)"
+__LINK__="https://github.com/dwettstein/PythonStuff"
+__DESCRIPTION__=("This is a template for Python API clients.")
+# Changelog:
+# - v0.0.1, yyyy-mm-dd, David Wettstein: First implementation.
+
+
 from enum import Enum
 import os
 import sys

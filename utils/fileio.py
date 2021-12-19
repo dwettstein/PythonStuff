@@ -1,19 +1,19 @@
 #!/usr/bin/env python
-# -----------------------------------------------------------------------------
-# This module contains utility functions for file IO handling.
-#
-#   File-Name:  fileio.py
-#   Author:     David Wettstein
-#   Version:    1.0.1
-#   License:    Copyright (c) 2018-2020 David Wettstein,
-#               licensed under the MIT License
-#               (https://dwettstein.mit-license.org/)
-#   Link:       https://github.com/dwettstein
-#
-#   Changelog:
-#               v1.0.1, 2020-11-29, David Wettstein: Improve linting.
-#               v1.0.0, 2018-11-26, David Wettstein: Initial module.
-# -----------------------------------------------------------------------------
+__FILENAME__="fileio.py"
+__AUTHOR__="David Wettstein"
+__VERSION__="1.0.2"
+__COPYRIGHT__="Copyright (c) 2018-2021 %s" % (__AUTHOR__)
+__LICENSE__="MIT License (https://dwettstein.mit-license.org/)"
+__LINK__="https://github.com/dwettstein/PythonStuff"
+__DESCRIPTION__=(
+    "This module contains utility functions for file IO handling."
+)
+# Changelog:
+# - v1.0.2, 2021-12-19, David Wettstein: Refactor header part.
+# - v1.0.1, 2020-11-29, David Wettstein: Improve linting.
+# - v1.0.0, 2018-11-26, David Wettstein: Initial module.
+
+
 import base64
 import csv
 
